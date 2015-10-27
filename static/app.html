@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="geng">
+<script src="/static/highlightjs/highlight.pack.js"></script>
+<script type="text/javascript" src="/static/angular/angular.min.js"></script>
+<script type="text/javascript" src="/static/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="/static/angular-resource/angular-resource.min.js"></script>
+<script src="/static/angular-highlightjs/angular-highlightjs.min.js"></script>
+<script type="text/javascript" src="/static/js/app.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/highlightjs//styles/github.css" />
+<link rel="stylesheet" type="text/css" href="/static/bootstrap/dist/css/bootstrap.min.css" />
+<title>Flask-Ionic Bootstrapper</title>
+<body ng-controller="AppCtrl">
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>ngFlask</h1>
+            <p class="well">Use this tool to generate an Ionic project with a fully functional RESTful python-flask API</p>
+
+            <h3>Before you begin</h3>
+            <p>Be sure to have <a href="https://nodejs.org/" target="_blank">NodeJS</a>, <a href="https://pypi.python.org/pypi/pip" target="_blank">Python Pip</a> and <a href="http://ionicframework.com/" target="_blank">Ionic</a> installed prior to running the init script.</p>
+            <p></p>
+            <hr />
+
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="application-name" class="col-sm-2 control-label">Application Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="application.name" class="form-control" id="application-name" placeholder="My Awesome App">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="application-base_url" class="col-sm-2 control-label">API Base URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="application.base_url" class="form-control" id="application-base_url" placeholder="http://10.0.0.21:5000/">
+                    </div>
+                </div>
+                <hr />
+                <h3>Endpoints</h3>
+                <p>Endpoints define the data structure of your API.</p>
+                <div ng-repeat="endpoint in application.endpoints" class="well">
+
+                    <div class="form-group">
+                        <label for="endpoint_endpoint" class="col-sm-2 control-label">REST Endpoint</label>
+                        <div class="col-sm-10">
+                            <input type="text" ng-model="endpoint.endpoint" class="form-control" id="endpoint_endpoint" placeholder="users">
+                        </div>
+
+                        <label for="req_auth" class="col-sm-2 control-label">Require Auth</label>
+                        <div class="col-sm-10 checkbox">
+                            <input id="req_auth" type="checkbox" value="req_auth" ng-model="endpoint.req_auth" />
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div ng-repeat="kvs in endpoint.kvs">
+                        <div class="form-group">
+                            <label for="kvs_key" class="col-sm-2 control-label">Key</label>
+                            <div class="col-sm-10">
+                                <input type="text" ng-model="kvs.key" class="form-control" id="kvs_key" placeholder="email_addr">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="kvs_type" class="col-sm-2 control-label">Type</label>
+                            <div class="col-sm-10">
+                                <select name="kvs_type" ng-model="kvs.type" id="kvs_type">
+                                    <option value="String">String</option>
+                                    <option value="Integer">Integer</option>
+                                    <option value="Float">Float</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Date">Date</option>
+                                    <option value="DateTime">Date Time</option>
+                                    <option value="Password">Password</option>
+                                    <option value="Location">Geo Location</option>
+                                    <option value="File">File</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" ng-click="add_kv(endpoint)" class="btn btn-default">Add Values</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" ng-click="add_endpoint()" class="btn btn-default">Add Endpoint</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" ng-click="generate_output()" class="btn btn-primary btn-lg">Generate App</button>
+                </div>
+                <hr />
+                <h3>Plugins</h3>
+                <p>Plugins add additional functionality to your application such as geolocation and camera services.</p>
+                <div class="pull-right">
+                    <label>Search:</label> <input ng-model="searchText">
+                </div>
+                <table class="table table-condensed table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th width="10px">Install</th>
+                            <th width="200px">Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="plugin in plugins | filter:searchText">
+                            <td><input type="checkbox" ng-click="add_plugin(plugin.id)" value="{{ plugin.id }}" name="plugins"></td>
+                            <td><a target="_blank" href="{{ plugin.url }}">{{ plugin.name }}</a></td>
+                            <td ng-bind-html-unsafe="plugin.description">{{ plugin.description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+            <a ng-if="tarfile" class="btn btn-primary" href="/{{ tarfile }}" target="_blank">Download gzip</a>
+
+            <h3 class="lead">Command Line Installer</h3>
+            <div hljs source="script_output"></div>
+            <h3 class="lead">views.py</h3>
+            <p>This is the main functionality of the API, the complete API code is available in the GZip.</p>
+            <div hljs source="api_output"></div>
+            <h3 class="lead">index.html</h3>
+            <div hljs source="index_output"></div>
+            <h3 class="lead">app.js</h3>
+            <div hljs source="app_output"></div>
+            <h3 class="lead">controllers.js</h3>
+            <div hljs source="controller_output"></div>
+            <h3 class="lead">services.js</h3>
+            <div hljs source="service_output"></div>
+            <h3 class="lead">tabs.html</h3>
+            <div hljs source="nav_output"></div>
+        
+            <span ng-repeat="endpoint in endpoints">
+                <h3 class="lead">{{ endpoint.name }}</h3>
+                <div hljs source="endpoint.html"></div>
+            </span>
+
+            <h3 class="lead">API Tests</h3>
+            <p>These tests simply ensure the API is responding properly to requests.</p>
+            <div hljs source="tests_output"></div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

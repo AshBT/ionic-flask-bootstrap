@@ -1,0 +1,24 @@
+<ion-view view-title="{{ data.endpoint | capitalize }}" cache-view="false">
+    <ion-nav-buttons side="right">
+        <a class="button button-positive" href="/#/tab/create/{{ data.endpoint }}">Create {{ data.endpoint }}</a>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="get_latest()"></ion-refresher>
+
+        {% raw %}{{ meta.total }}{% endraw %} Results
+
+         <ion-list>
+            <ion-item 
+                ng-repeat="result in results" 
+                href="{% raw %} /#/tab/view/{% endraw %}{{ data.endpoint }}{% raw %}/{{ result._id.$oid }}{% endraw %}" 
+                type="item-link">
+                {% raw %}{{ result.created | relative_date }}{% endraw %}
+            </ion-item>
+          </ion-list>
+
+        <ion-infinite-scroll on-infinite="infinite_scroll()"></ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>
+

@@ -1,0 +1,19 @@
+<ion-view view-title="View {{ data.endpoint | capitalize }}">
+    <ion-nav-buttons side="right">
+        <a class="button button-energized" href="/#/tab/edit/{{ data.endpoint }}/{% raw %}{{ results[0]._id.$oid }}{% endraw %}">Edit</a>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+
+        <ion-list>
+            <ion-item ng-repeat="(key, value) in results[0]" ng-if="key != '_id'">
+                {% raw %}
+                    {{ key }} : {{ value }}
+                {% endraw %}
+            </ion-item>
+        </ion-list>
+
+        <button class="button button-assertive button-block" ng-click="delete()">Delete</button>
+
+    </ion-content>
+</ion-view>
+

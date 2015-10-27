@@ -1,0 +1,12 @@
+<ion-tabs class="tabs-icon-top tabs-color-active-positive" cache-view="false">
+
+    <ion-tab title="{{ data.name }}" icon-off="ion-earth" icon-on="ion-earth" href="#/tab/dash">
+        <ion-nav-view name="tab-dash"></ion-nav-view>
+    </ion-tab>
+    {% for endpoint in data.endpoints %}
+    <ion-tab title="{{ endpoint.endpoint }}" icon-off="ion-earth" icon-on="ion-earth" href="#/tab/{{ endpoint.endpoint }}">
+        <ion-nav-view name="tab-{{ endpoint.endpoint }}"></ion-nav-view>
+    </ion-tab>
+   {% endfor %} 
+</ion-tabs>
+

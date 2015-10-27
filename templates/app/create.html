@@ -1,0 +1,14 @@
+<ion-view view-title="Create {{ data.endpoint | capitalize }}">
+    <ion-content class="padding">
+        <div class="list">
+        {% for kvs in data.kvs %}
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">{{ kvs.key }}</span>
+                <input ng-model="formdata.{{ kvs.key }}" type="text" placeholder="{{ kvs.type }}">
+            </label>
+        {% endfor %}
+        </div>
+        <button class="button button-block button-balanced" ng-click="post(formdata)">Save</button>
+    </ion-content>
+</ion-view>
+
